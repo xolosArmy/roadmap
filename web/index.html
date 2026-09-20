@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="/roadmap/">
+  <title>Public Roadmap — xolosArmy Network</title>
+  <meta name="description" content="Explore the public xolosArmy Network roadmap: project phases, priorities and reported status in a validated, versioned snapshot.">
+  <meta name="theme-color" content="#171c1c">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="assets/style.css">
+  <script type="module" src="assets/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#roadmap">Skip to roadmap</a>
+  <header class="masthead wrap">
+    <a class="brand" href="https://xolosarmy.xyz/"><span class="mark" aria-hidden="true">X</span><span>xolosArmy<span class="network">NETWORK</span></span></a>
+    <nav aria-label="Main"><a href="#roadmap">Roadmap</a><a href="#method">How to read it</a><a href="https://github.com/xolosArmy/roadmap">Source <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div><p class="eyebrow"><span class="dot"></span> PUBLIC DEVELOPMENT ROADMAP</p><h1 id="title">A shared direction.<br><em>Visible progress.</em></h1><p class="intro">Follow the public projects building xolosArmy Network. Explore their phases, priorities and reported status, one published snapshot at a time.</p></div>
+      <aside class="hero-note"><span class="small-index">01 / THE NETWORK</span><p>Open interfaces.<br>Clear boundaries.<br>Evidence before claims.</p><span class="note-line"></span><small>A public view of a continuing journey.</small></aside>
+    </section>
+    <section id="roadmap" class="roadmap-section" aria-labelledby="roadmap-title">
+      <div class="section-heading"><div><p class="eyebrow">THE PUBLIC VIEW</p><h2 id="roadmap-title">Project overview</h2></div><p>Phases describe direction.<br>Statuses describe reported work.</p></div>
+      <div id="overview" class="overview" hidden>
+        <div><span id="public-count" class="number"></span><span>Public projects</span></div>
+        <div><span id="active-count" class="number"></span><span>Active</span></div>
+        <div><span id="review-count" class="number"></span><span>In review</span></div>
+        <div class="observation"><span>Snapshot observed</span><time id="observed-at"></time><small>Individual update times appear below.</small></div>
+      </div>
+      <div id="unavailable" class="notice" role="status"><div class="notice-symbol" aria-hidden="true">—</div><div><h3>Roadmap data temporarily unavailable.</h3><p>The public snapshot could not yet be verified. Please try again.</p><button id="retry" type="button">Try again</button></div></div>
+      <noscript><div class="notice"><p>JavaScript is needed to validate and filter the roadmap in your browser. You can also <a href="roadmap-status.json">read the published JSON snapshot</a>. Its timestamps identify the observation it represents.</p></div></noscript>
+      <form id="filters" hidden aria-label="Filter public projects"><fieldset id="filter-fields" disabled><legend class="sr-only">Filter public projects</legend>
+        <label>Roadmap phase<select id="filter-phase" name="phase"><option value="">All</option></select></label>
+        <label>Status<select id="filter-status" name="status"><option value="">All</option></select></label>
+        <label>Priority<select id="filter-priority" name="priority"><option value="">All</option></select></label>
+        <label>Security status<select id="filter-securityStatus" name="securityStatus"><option value="">All</option></select></label>
+        <button id="reset-filters" type="button">Reset filters</button>
+      </fieldset></form>
+      <p id="result-count" class="result-count" role="status" aria-live="polite"></p>
+      <div id="projects" class="projects"></div>
+      <p id="empty" class="notice" hidden>No public projects match these filters. Try a different combination.</p>
+      <details id="snapshot-details" class="snapshot-details" hidden><summary>Inspect this snapshot</summary><dl><div><dt>Artifact generated</dt><dd id="generated-at"></dd></div><div><dt>Snapshot SHA-256</dt><dd><code id="snapshot-id"></code></dd></div></dl><p><a href="roadmap-status.json">Download JSON</a> <span aria-hidden="true">/</span> <a id="history-link">View archived snapshot</a> <span aria-hidden="true">/</span> <a href="schema.json">Read the schema</a></p><p>Generation time is not a new assessment of each project. The digest detects changes to the artifact; it is not an audit or a signature.</p></details>
+    </section>
+    <section id="method" class="method" aria-labelledby="method-title"><div><p class="eyebrow">READ WITH CONTEXT</p><h2 id="method-title">A snapshot,<br>with its limits.</h2></div><div class="method-copy"><p>This page presents a selected, sanitized view of the private operational roadmap. The private source remains authoritative.</p><p>Project states are reported as of the snapshot observation. “Reported gate passed” refers to a defined gate recorded in the source; it does not establish that a product is audited, secure or ready for production.</p><p>Priorities are recorded values, not a ranking created by this page. A phase does not imply a completion percentage or a delivery promise.</p></div></section>
+    <section id="support" class="support" aria-labelledby="support-title"><div><p class="eyebrow">BUILD WITH US</p><h2 id="support-title">Support xolosArmy Network</h2><p>Support the continued development of xolosArmy Network with a voluntary eCash donation.</p><p class="support-small">Direct to the project. No account or donation service required.</p></div><div class="donation"><span class="address-label">eCash / XEC</span><code id="donation-address" tabindex="0">{{DONATION_ADDRESS}}</code><div class="donation-actions"><button id="copy-address" type="button" hidden>Copy address</button><a class="wallet-button" href="{{DONATION_ADDRESS}}">Open eCash wallet <span aria-hidden="true">↗</span></a></div><p id="copy-status" role="status" aria-live="polite"></p></div></section>
+  </main>
+  <footer class="wrap"><span>xolosArmy Network</span><span>Public roadmap · Contract 1.0.0</span></footer>
+</body>
+</html>
