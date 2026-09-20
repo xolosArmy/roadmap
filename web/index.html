@@ -24,7 +24,7 @@
       <div><p class="eyebrow"><span class="dot"></span> PUBLIC DEVELOPMENT ROADMAP</p><h1 id="title">A shared direction.<br><em>Visible progress.</em></h1><p class="intro">Follow the public projects building xolosArmy Network. Explore their phases, priorities and reported status, one published snapshot at a time.</p></div>
       <aside class="hero-note"><span class="small-index">01 / THE NETWORK</span><p>Open interfaces.<br>Clear boundaries.<br>Evidence before claims.</p><span class="note-line"></span><small>A public view of a continuing journey.</small></aside>
     </section>
-    <section id="roadmap" class="roadmap-section" aria-labelledby="roadmap-title">
+    <section id="roadmap" class="roadmap-section" aria-labelledby="roadmap-title" aria-busy="true">
       <div class="section-heading"><div><p class="eyebrow">THE PUBLIC VIEW</p><h2 id="roadmap-title">Project overview</h2></div><p>Phases describe direction.<br>Statuses describe reported work.</p></div>
       <div id="overview" class="overview" hidden>
         <div><span id="public-count" class="number"></span><span>Public projects</span></div>
@@ -32,7 +32,8 @@
         <div><span id="review-count" class="number"></span><span>In review</span></div>
         <div class="observation"><span>Snapshot observed</span><time id="observed-at"></time><small>Individual update times appear below.</small></div>
       </div>
-      <div id="unavailable" class="notice" role="status"><div class="notice-symbol" aria-hidden="true">—</div><div><h3>Roadmap data temporarily unavailable.</h3><p>The public snapshot could not yet be verified. Please try again.</p><button id="retry" type="button">Try again</button></div></div>
+      <div id="loading" class="notice" role="status"><p>Loading roadmap. Verifying the public snapshot…</p></div>
+      <div id="unavailable" class="notice" role="status" hidden><div class="notice-symbol" aria-hidden="true">—</div><div><h3>Roadmap data temporarily unavailable.</h3><p>The public snapshot could not be verified. Please try again.</p><button id="retry" type="button">Try again</button></div></div>
       <noscript><div class="notice"><p>JavaScript is needed to validate and filter the roadmap in your browser. You can also <a href="roadmap-status.json">read the published JSON snapshot</a>. Its timestamps identify the observation it represents.</p></div></noscript>
       <form id="filters" hidden aria-label="Filter public projects"><fieldset id="filter-fields" disabled><legend class="sr-only">Filter public projects</legend>
         <label>Roadmap phase<select id="filter-phase" name="phase"><option value="">All</option></select></label>

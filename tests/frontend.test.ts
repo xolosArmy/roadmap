@@ -12,18 +12,75 @@ const url = new URL('https://example.test/roadmap/roadmap-status.json');
 async function dom() { return new JSDOM(await renderShell(), { url: 'https://example.test/roadmap/' }); }
 const fetchText = (text: string, status = 200): typeof fetch => async () => new Response(text, { status });
 
+function delayedResponse() {
+  let resolve!: (response: Response) => void;
+  let reject!: (error: Error) => void;
+  const promise = new Promise<Response>((success, failure) => { resolve = success; reject = failure; });
+  return { promise, resolve, reject };
+}
+function assertState(page: JSDOM, state: 'loading' | 'ready' | 'unavailable') {
+  const doc = page.window.document;
+  assert.equal(doc.getElementById('roadmap')?.getAttribute('aria-busy'), String(state === 'loading'));
+  assert.equal(doc.getElementById('loading')?.hidden, state !== 'loading');
+  assert.equal(doc.getElementById('unavailable')?.hidden, state !== 'unavailable');
+  if (state !== 'ready') {
+    assert.equal(doc.querySelectorAll('.project').length, 0);
+    assert.equal(doc.getElementById('overview')?.hidden, true);
+    assert.equal(doc.getElementById('snapshot-details')?.hidden, true);
+  }
+}
+function nextIdle(page: JSDOM): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const region = page.window.document.getElementById('roadmap')!;
+    const observer = new page.window.MutationObserver(() => {
+      if (region.getAttribute('aria-busy') === 'false') {
+        clearTimeout(timer); observer.disconnect(); resolve();
+      }
+    });
+    const timer = setTimeout(() => { observer.disconnect(); reject(new Error('Reload did not finish')); }, 2_000);
+    observer.observe(region, { attributes: true, attributeFilter: ['aria-busy'] });
+  });
+}
+
+test('initial HTML exposes loading, never a premature failure announcement', async () => {
+  const page = await dom();
+  assertState(page, 'loading');
+  assert.equal(page.window.document.getElementById('loading')?.getAttribute('role'), 'status');
+  page.window.close();
+});
+test('a delayed valid response keeps loading until the validated roadmap is ready', async () => {
+  const page = await dom(); const response = delayedResponse();
+  const controller = mountRoadmap(page.window.document, async () => response.promise);
+  const pending = controller.reload();
+  await new Promise(resolve => setImmediate(resolve));
+  assertState(page, 'loading');
+  assert.equal((page.window.document.getElementById('retry') as HTMLButtonElement).disabled, true);
+  assert.equal(controller.getSnapshot(), undefined);
+  response.resolve(new Response(canonicalJson(await snapshot())));
+  await pending;
+  assertState(page, 'ready');
+  assert.equal(page.window.document.querySelectorAll('.project').length, 8);
+  page.window.close();
+});
 test('valid public JSON renders all eight projects and reported metadata', async () => {
   const page = await dom(); const controller = mountRoadmap(page.window.document, fetchText(canonicalJson(await snapshot())));
   await controller.reload();
   assert.equal(page.window.document.querySelectorAll('.project').length, 8);
-  assert.equal(page.window.document.getElementById('unavailable')?.hidden, true);
+  assertState(page, 'ready');
   assert.equal(page.window.document.getElementById('observed-at')?.textContent, '2026-09-20 18:13:26 UTC');
   assert.match(page.window.document.getElementById('projects')!.textContent!, /Tonalli Wallet/);
   page.window.close();
 });
 for (const [name, response] of [['missing', () => fetchText('', 404)], ['corrupt', () => fetchText('{invalid')], ['network', () => (async () => { throw new Error('PRIVATE_CANARY'); }) as typeof fetch]] as const) {
   test(`${name} snapshot shows only controlled unavailable state`, async () => {
-    const page = await dom(); const controller = mountRoadmap(page.window.document, response()); await controller.reload();
+    const page = await dom(); const delayed = delayedResponse();
+    const controller = mountRoadmap(page.window.document, async () => delayed.promise);
+    const pending = controller.reload();
+    await new Promise(resolve => setImmediate(resolve));
+    assertState(page, 'loading');
+    void response()(url).then(delayed.resolve, delayed.reject);
+    await pending;
+    assertState(page, 'unavailable');
     assert.equal(page.window.document.querySelectorAll('.project').length, 0);
     assert.equal(page.window.document.getElementById('unavailable')?.hidden, false);
     assert.equal(page.window.document.getElementById('overview')?.hidden, true);
@@ -37,10 +94,17 @@ test('invalid schema cannot render even with a valid recomputed digest', async (
   assert.equal(page.window.document.body.textContent?.includes('PRIVATE_CANARY'), false); page.window.close();
 });
 test('failed refresh clears a previously valid display, counts and metadata', async () => {
-  const page = await dom(); let valid = true; const bytes = canonicalJson(await snapshot());
-  const controller = mountRoadmap(page.window.document, async () => new Response(valid ? bytes : '{}'));
+  const page = await dom(); let calls = 0; const bytes = canonicalJson(await snapshot());
+  const response = delayedResponse();
+  const controller = mountRoadmap(page.window.document, async () => ++calls === 1 ? new Response(bytes) : response.promise);
   await controller.reload(); assert.equal(page.window.document.querySelectorAll('.project').length, 8);
-  valid = false; await controller.reload();
+  const pending = controller.reload();
+  assertState(page, 'loading');
+  assert.equal(controller.getSnapshot(), undefined);
+  assert.equal(page.window.document.getElementById('result-count')?.textContent, '');
+  response.resolve(new Response('{}'));
+  await pending;
+  assertState(page, 'unavailable');
   assert.equal(page.window.document.querySelectorAll('.project').length, 0);
   assert.equal(page.window.document.getElementById('snapshot-details')?.hidden, true);
   assert.equal(page.window.document.getElementById('result-count')?.textContent, ''); page.window.close();
@@ -57,8 +121,43 @@ test('an older request cannot restore data after a newer failed refresh', async 
   await pending;
   assert.equal(page.window.document.querySelectorAll('.project').length, 0);
   assert.equal(controller.getSnapshot(), undefined);
-  assert.equal(page.window.document.getElementById('unavailable')?.hidden, false);
+  assertState(page, 'unavailable');
   page.window.close();
+});
+for (const outcome of ['valid', 'rejected'] as const) test(`an obsolete ${outcome} request cannot end a newer loading state`, async () => {
+  const page = await dom(); const first = delayedResponse(); const second = delayedResponse();
+  const signals: AbortSignal[] = [];
+  const bytes = canonicalJson(await snapshot());
+  const controller = mountRoadmap(page.window.document, async (_target, options) => {
+    const signal = options?.signal; assert.ok(signal); signals.push(signal);
+    return signals.length === 1 ? first.promise : second.promise;
+  });
+  const older = controller.reload(); const newer = controller.reload();
+  assert.equal(signals[0].aborted, true);
+  assert.equal(signals[1].aborted, false);
+  if (outcome === 'valid') first.resolve(new Response(bytes)); else first.reject(new Error('Aborted earlier request'));
+  await older;
+  assertState(page, 'loading');
+  assert.equal(controller.getSnapshot(), undefined);
+  assert.equal((page.window.document.getElementById('retry') as HTMLButtonElement).disabled, true);
+  second.resolve(new Response(bytes)); await newer;
+  assertState(page, 'ready');
+  assert.equal(page.window.document.querySelectorAll('.project').length, 8);
+  assert.equal((page.window.document.getElementById('retry') as HTMLButtonElement).disabled, false);
+  page.window.close();
+});
+test('retry hides the previous failure while pending and can recover successfully', async () => {
+  const page = await dom(); const response = delayedResponse(); let calls = 0;
+  const controller = mountRoadmap(page.window.document, async () => ++calls === 1 ? new Response('{}') : response.promise);
+  await controller.reload(); assertState(page, 'unavailable');
+  const button = page.window.document.getElementById('retry') as HTMLButtonElement;
+  assert.equal(button.disabled, false);
+  const finished = nextIdle(page); button.click();
+  assertState(page, 'loading'); assert.equal(button.disabled, true);
+  response.resolve(new Response(canonicalJson(await snapshot()))); await finished;
+  assertState(page, 'ready'); assert.equal(button.disabled, false);
+  assert.equal(page.window.document.querySelectorAll('.project').length, 8);
+  assert.equal(calls, 2); page.window.close();
 });
 for (const [key, value, names] of [
   ['phase', 'A', ['Tonalli Memo', 'Tonalli Wallet']],

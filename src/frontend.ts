@@ -48,6 +48,8 @@ export function mountRoadmap(doc: Document, fetcher: typeof fetch, clipboard?: P
     if (!found) throw new Error('MISSING_UI');
     return found as T;
   };
+  const roadmap = element('roadmap');
+  const loading = element('loading');
   const list = element('projects');
   const unavailable = element('unavailable');
   const overview = element('overview');
@@ -95,7 +97,12 @@ export function mountRoadmap(doc: Document, fetcher: typeof fetch, clipboard?: P
     fieldset.disabled = true;
     form.hidden = true;
     element('snapshot-details').hidden = true;
-    unavailable.hidden = false;
+  }
+
+  function setState(state: 'loading' | 'ready' | 'unavailable') {
+    loading.hidden = state !== 'loading';
+    unavailable.hidden = state !== 'unavailable';
+    roadmap.setAttribute('aria-busy', String(state === 'loading'));
   }
 
   async function reload() {
@@ -103,7 +110,7 @@ export function mountRoadmap(doc: Document, fetcher: typeof fetch, clipboard?: P
     active?.abort(); active = new AbortController();
     const controller = active;
     const timer = setTimeout(() => controller.abort(), 10_000);
-    clear(); retry.disabled = true;
+    setState('loading'); clear(); retry.disabled = true;
     try {
       const loaded = await loadSnapshot(fetcher, new URL('roadmap-status.json', doc.baseURI), controller.signal);
       if (generation !== request) return;
@@ -124,11 +131,12 @@ export function mountRoadmap(doc: Document, fetcher: typeof fetch, clipboard?: P
       element('generated-at').textContent = loaded.generatedAt.replace('T', ' ').replace('Z', ' UTC');
       element('snapshot-id').textContent = loaded.snapshotId;
       element<HTMLAnchorElement>('history-link').href = `history/${loaded.observedAt.slice(0, 10)}/${loaded.snapshotId}.json`;
-      unavailable.hidden = true; overview.hidden = false;
+      overview.hidden = false;
       form.hidden = false; fieldset.disabled = false;
       element('snapshot-details').hidden = false;
       render();
-    } catch { if (generation === request) clear(); }
+      setState('ready');
+    } catch { if (generation === request) { clear(); setState('unavailable'); } }
     finally { clearTimeout(timer); if (generation === request) retry.disabled = false; }
   }
 
