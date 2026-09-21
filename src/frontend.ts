@@ -68,7 +68,9 @@ export function mountRoadmap(doc: Document, fetcher: typeof fetch, clipboard?: P
     for (const project of visible) {
       const article = doc.createElement('article'); article.className = 'project';
       const top = doc.createElement('div'); top.className = 'project-top';
-      const h3 = doc.createElement('h3'); h3.textContent = project.name;
+      const h3 = doc.createElement('h3');
+      // Presentation-only alias: the public contract/snapshot identity remains `tonalli-contracts` / `Tonalli Contracts`.
+      h3.textContent = project.id === 'tonalli-contracts' ? 'Tonalli Core' : project.name;
       const status = doc.createElement('span'); status.className = 'status status-' + project.status.toLowerCase(); status.textContent = label(project.status);
       top.append(h3, status); article.append(top);
       const dl = doc.createElement('dl');

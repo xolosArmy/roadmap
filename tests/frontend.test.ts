@@ -69,6 +69,8 @@ test('valid public JSON renders all eight projects and reported metadata', async
   assertState(page, 'ready');
   assert.equal(page.window.document.getElementById('observed-at')?.textContent, '2026-09-20 18:13:26 UTC');
   assert.match(page.window.document.getElementById('projects')!.textContent!, /Tonalli Wallet/);
+  assert.match(page.window.document.getElementById('projects')!.textContent!, /Tonalli Core/);
+  assert.equal(page.window.document.getElementById('projects')!.textContent!.includes('Tonalli Contracts'), false);
   page.window.close();
 });
 for (const [name, response] of [['missing', () => fetchText('', 404)], ['corrupt', () => fetchText('{invalid')], ['network', () => (async () => { throw new Error('PRIVATE_CANARY'); }) as typeof fetch]] as const) {
@@ -162,8 +164,8 @@ test('retry hides the previous failure while pending and can recover successfull
 for (const [key, value, names] of [
   ['phase', 'A', ['Tonalli Memo', 'Tonalli Wallet']],
   ['status', 'REVIEW', ['Tonalli Wallet', 'x402-XEC']],
-  ['priority', 'P0', ['Tonalli Contracts', 'Tonalli Wallet']],
-  ['securityStatus', 'REPORTED_PASS', ['Tonalli Contracts']],
+  ['priority', 'P0', ['Tonalli Core', 'Tonalli Wallet']],
+  ['securityStatus', 'REPORTED_PASS', ['Tonalli Core']],
 ] as const) test(`${key} filter changes presentation without mutating snapshot`, async () => {
   const page = await dom(); const controller = mountRoadmap(page.window.document, fetchText(canonicalJson(await snapshot()))); await controller.reload();
   const before = canonicalJson(controller.getSnapshot());
