@@ -43,4 +43,4 @@ await visit('dist');
 const integrity: Record<string, string> = {};
 for (const file of files.sort()) integrity[file.slice(5)] = createHash('sha256').update(await readFile(file)).digest('hex');
 await writeFile('dist/build-integrity.json', JSON.stringify(integrity, null, 2) + '\n');
-console.log(`Built ${files.length} static files for /roadmap/. No deployment performed.`);
+console.log(`Built ${files.length} static files for the site root. No deployment performed.`);

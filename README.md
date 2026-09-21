@@ -1,6 +1,6 @@
 # xolosArmy Public Roadmap
 
-A small, versioned public view of xolosArmy Network. The intended route is `https://xolosarmy.xyz/roadmap/`. This repository contains a release candidate; creating it does not deploy that route.
+A small, versioned public view of xolosArmy Network. The canonical production URL is `https://roadmap.xolosarmy.xyz/`. Repository changes do not modify the private canonical roadmap.
 
 **The public roadmap is a sanitized derivative of the private operational roadmap and is not itself the canonical source of truth.**
 
@@ -22,7 +22,7 @@ npm run check
 npm run serve
 ```
 
-Preview: `http://localhost:4173/roadmap/`. Build output is `dist/`. The preview server is for local review only.
+Preview: `http://localhost:4173/`. Build output is `dist/`. The preview server is for local review only.
 
 ## Manual publication
 
@@ -58,4 +58,4 @@ The full address is displayed and copied unchanged. The wallet URI contains no a
 - [Publication, history and rollback](docs/PUBLICATION.md)
 - [Provenance and release limitations](docs/PROVENANCE.md)
 
-**DO NOT MERGE. DO NOT DEPLOY TO PRODUCTION.** Independent review must identify the exact candidate HEAD.
+Production uses GitHub Pages through the reviewed workflow in `.github/workflows/pages.yml`. Merge, Pages configuration, custom-domain setup and DNS changes remain separate authorized operations. Independent review must identify the exact candidate HEAD before any release operation.

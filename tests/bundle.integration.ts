@@ -8,7 +8,7 @@ import { JSDOM } from 'jsdom';
 // This does not claim real-browser layout, CSP or compatibility verification.
 for (const valid of [true, false]) test(`built client ${valid ? 'renders validated data' : 'fails closed on corrupt data'}`, async () => {
   const page = new JSDOM(await readFile('dist/index.html', 'utf8'), {
-    url: 'https://example.test/roadmap/', runScripts: 'outside-only',
+    url: 'https://roadmap.xolosarmy.xyz/', runScripts: 'outside-only',
   });
   try {
     const bytes = valid ? await readFile('dist/roadmap-status.json', 'utf8') : '{"projects":[]}';

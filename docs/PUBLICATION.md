@@ -47,11 +47,13 @@ Replace the path with an existing validated archive. The page labels the restore
 
 A corrupt current artifact is not silently repaired. Recover it under operator supervision from verified history. A stale lock requires manual investigation. Cross-version history needs a future explicit validator/version migration; v1 accepts only its own contract/catalog versions.
 
-## Hosting handoff — not executed by this task
+## GitHub Pages hosting
 
-`npm run build` produces a static release under `dist/`, intended to be mounted at `/roadmap/`. Preserve the HTML base path, serve JSON as UTF-8 application/json and serve the full release as one reviewed deployment. Redirect `/roadmap` to `/roadmap/` or preserve the base element. Do not copy source checkout contents to the public document root.
+`npm run build` produces a static release under `dist/`, intended for the root of `https://roadmap.xolosarmy.xyz/`. The HTML base is `/`; assets, the current snapshot, schema and history therefore resolve from that host root. Serve the full release as one reviewed deployment. Do not copy source checkout contents to the public document root.
 
-Recommended HTTP headers for the eventual hosting change:
+GitHub Pages is the selected static host. It does not provide arbitrary custom response-header configuration for this deployment. The application retains the restrictive meta Content Security Policy and referrer policy that can be expressed safely in the document, but the deployment does not claim custom `Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy` or `frame-ancestors` response headers. In particular, `frame-ancestors` is not supported in a meta policy. If future threat modeling requires those response headers, an edge/proxy or different static host will be required.
+
+The local preview server sets the following review-oriented headers:
 
 ```text
 Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'; object-src 'none'
@@ -60,7 +62,7 @@ Referrer-Policy: no-referrer
 Cache-Control: no-store
 ```
 
-The supplied preview server sets these headers and performs no deployment. Production routing, DNS, host caching rules and release promotion remain separate future work. Contract or catalog changes require a coordinated code/data release so an older browser rejects incompatible data rather than guessing its meaning.
+The supplied preview server performs no deployment. The GitHub Actions Pages workflow validates and builds from `main`, uploads only `dist/`, and deploys with the minimum Pages permissions. Enabling Pages, assigning the custom domain, changing GoDaddy DNS, enforcing HTTPS and promoting a release remain separately controlled operations. Contract or catalog changes require a coordinated code/data release so an older browser rejects incompatible data rather than guessing its meaning.
 
 ## Future automation model
 

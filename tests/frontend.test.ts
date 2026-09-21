@@ -8,8 +8,8 @@ import { renderShell } from '../src/shell.ts';
 import { changed, snapshot } from './helpers.ts';
 
 const EXACT_ADDRESS = 'ecash:qq7qn90ev23ecastqmn8as00u8mcp4tzsspvt5dtlk';
-const url = new URL('https://example.test/roadmap/roadmap-status.json');
-async function dom() { return new JSDOM(await renderShell(), { url: 'https://example.test/roadmap/' }); }
+const url = new URL('https://roadmap.xolosarmy.xyz/roadmap-status.json');
+async function dom() { return new JSDOM(await renderShell(), { url: 'https://roadmap.xolosarmy.xyz/' }); }
 const fetchText = (text: string, status = 200): typeof fetch => async () => new Response(text, { status });
 
 function delayedResponse() {

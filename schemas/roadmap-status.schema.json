@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://xolosarmy.xyz/roadmap/schema.json",
+  "$id": "https://roadmap.xolosarmy.xyz/schema.json",
   "title": "xolosArmy Public Roadmap Contract 1.0.0",
   "type": "object",
   "additionalProperties": false,

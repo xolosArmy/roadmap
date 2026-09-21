@@ -31,7 +31,7 @@ Public errors are fixed codes. Private row values and validator diagnostics are 
 
 ## Browser and donation behavior
 
-The UI uses text nodes, a closed catalog, bounded reads and no credential-bearing requests. A restrictive Content Security Policy excludes remote scripts and dynamic evaluation. The hosting guide adds `frame-ancestors` as an HTTP header, because it is not supported in a meta policy.
+The UI uses text nodes, a closed catalog, bounded reads and no credential-bearing requests. A restrictive meta Content Security Policy excludes remote scripts and dynamic evaluation, and a meta referrer policy applies `no-referrer`. GitHub Pages is the selected static host and does not provide arbitrary custom response-header configuration for this deployment. The absence of custom `frame-ancestors`, `X-Content-Type-Options`, `Referrer-Policy` and Content Security Policy response headers is a known, accepted hosting limitation; this repository does not claim those headers are present. `frame-ancestors` cannot be expressed in a meta policy. A future requirement for those response headers would require an edge/proxy or different static host.
 
 Support is voluntary and direct to the exact constant in `src/policy.ts`. Copy failure provides a manual fallback without falsely claiming success. The wallet link has no amount or intermediary. There is no QR, donation backend, donor identity capture or donation analytics. Opening a wallet does not initiate or sign a transfer in this application.
 
