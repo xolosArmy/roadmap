@@ -48,7 +48,7 @@ export type UnsignedSnapshot = Omit<Snapshot, 'snapshotId'>;
 const timestamp = { type: 'string', pattern: '^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$' };
 export const SCHEMA = {
   $schema: 'http://json-schema.org/draft-07/schema#',
-  $id: 'https://xolosarmy.xyz/roadmap/schema.json',
+  $id: 'https://roadmap.xolosarmy.xyz/schema.json',
   title: 'xolosArmy Public Roadmap Contract 1.0.0',
   type: 'object', additionalProperties: false,
   required: ['contractVersion', 'catalogVersion', 'generatedAt', 'observedAt', 'snapshotId', 'projects'],
