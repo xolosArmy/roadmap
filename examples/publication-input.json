@@ -1,0 +1,78 @@
+{
+  "observedAt": "2026-09-20T18:13:26Z",
+  "generatedAt": "2026-09-20T18:13:26Z",
+  "rows": [
+    [
+      "Project",
+      "Roadmap Phase",
+      "Priority",
+      "Status",
+      "Security Status",
+      "Last Update"
+    ],
+    [
+      "tonalli-core",
+      "0/Core",
+      "P0",
+      "FROZEN",
+      "PASS",
+      "2026-08-20 09:38"
+    ],
+    [
+      "RMZWallet / Tonalli Wallet",
+      "A",
+      "P0",
+      "REVIEW",
+      "CONDITIONAL",
+      "2026-09-20 11:28"
+    ],
+    [
+      "tonalli-memo",
+      "A",
+      "P1",
+      "ACTIVE",
+      "CONDITIONAL",
+      "2026-09-16 12:31"
+    ],
+    [
+      "x402-XEC",
+      "C",
+      "P1",
+      "REVIEW",
+      "CONDITIONAL",
+      "2026-09-20 11:28"
+    ],
+    [
+      "ecash-mexico",
+      "Ops",
+      "P2",
+      "ACTIVE",
+      "N/A",
+      "2026-09-05 17:59"
+    ],
+    [
+      "ecash-magazine",
+      "Ops",
+      "P2",
+      "ACTIVE",
+      "N/A",
+      "2026-09-19 18:00"
+    ],
+    [
+      "xolosramirez",
+      "Ops",
+      "P2",
+      "ACTIVE",
+      "N/A",
+      "2026-09-20 11:28"
+    ],
+    [
+      "tonalli-landing",
+      "Ops",
+      "P2",
+      "MAINTENANCE",
+      "N/A",
+      "2026-08-20 09:38"
+    ]
+  ]
+}

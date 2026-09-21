@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.publish.lock
+.snapshot-*.tmp
+.history-*.tmp
+*.log
+.env*
+private-inputs/
+coverage/

@@ -1,0 +1,134 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://xolosarmy.xyz/roadmap/schema.json",
+  "title": "xolosArmy Public Roadmap Contract 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "catalogVersion",
+    "generatedAt",
+    "observedAt",
+    "snapshotId",
+    "projects"
+  ],
+  "properties": {
+    "contractVersion": {
+      "const": "xolosarmy-public-roadmap/1.0.0"
+    },
+    "catalogVersion": {
+      "const": "2026-09-20.1"
+    },
+    "generatedAt": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "observedAt": {
+      "type": "string",
+      "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "snapshotId": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "projects": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "phase",
+          "priority",
+          "status",
+          "securityStatus",
+          "lastUpdate"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "ecash-magazine",
+              "ecash-mexico",
+              "tonalli-contracts",
+              "tonalli-memo",
+              "tonalli-wallet",
+              "tonalli-website",
+              "x402-xec",
+              "xolos-ramirez"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "enum": [
+              "eCash Magazine",
+              "eCash México",
+              "Tonalli Contracts",
+              "Tonalli Memo",
+              "Tonalli Wallet",
+              "Tonalli Website",
+              "x402-XEC",
+              "Xolos Ramírez"
+            ]
+          },
+          "phase": {
+            "type": "string",
+            "enum": [
+              "0/Core",
+              "A",
+              "B",
+              "C",
+              "D",
+              "E",
+              "F",
+              "Long-term",
+              "Ops"
+            ]
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "P0",
+              "P1",
+              "P2",
+              "P3"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "BLOCKED",
+              "REVIEW",
+              "FROZEN",
+              "COMPLETE",
+              "PLANNED",
+              "MAINTENANCE",
+              "RESEARCH",
+              "PRE-ENGINEERING",
+              "WAITING"
+            ]
+          },
+          "securityStatus": {
+            "type": "string",
+            "enum": [
+              "REPORTED_PASS",
+              "CONDITIONAL",
+              "BLOCKED",
+              "PENDING",
+              "NOT_ASSESSED",
+              "NOT_REPORTED"
+            ]
+          },
+          "lastUpdate": {
+            "type": "string",
+            "pattern": "^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+          }
+        }
+      }
+    }
+  }
+}
