@@ -74,10 +74,12 @@ export function mountRoadmap(doc: Document, fetcher: typeof fetch, clipboard?: P
       const status = doc.createElement('span'); status.className = 'status status-' + project.status.toLowerCase(); status.textContent = label(project.status);
       top.append(h3, status); article.append(top);
       const dl = doc.createElement('dl');
-      for (const [name, value] of [
+      const details: [string, string][] = [
         ['Roadmap phase', project.phase], ['Priority', project.priority],
         ['Security status', SECURITY_LABELS[project.securityStatus]], ['Last update (UTC)', project.lastUpdate.replace('T', ' ').replace('Z', '')],
-      ]) {
+      ];
+      if (project.id === 'xolos-ramirez') details.splice(2, 0, ['Current gate', 'X402-XR1 · ACTIVE']);
+      for (const [name, value] of details) {
         const group = doc.createElement('div');
         const dt = doc.createElement('dt'); dt.textContent = name;
         const dd = doc.createElement('dd'); dd.textContent = value;
