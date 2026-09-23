@@ -70,6 +70,7 @@ test('valid public JSON renders all eight projects and reported metadata', async
   assert.equal(page.window.document.getElementById('observed-at')?.textContent, '2026-09-20 18:13:26 UTC');
   assert.match(page.window.document.getElementById('projects')!.textContent!, /Tonalli Wallet/);
   assert.match(page.window.document.getElementById('projects')!.textContent!, /Tonalli Core/);
+  assert.match(page.window.document.getElementById('projects')!.textContent!, /X402-XR1 · ACTIVE/);
   assert.equal(page.window.document.getElementById('projects')!.textContent!.includes('Tonalli Contracts'), false);
   page.window.close();
 });
