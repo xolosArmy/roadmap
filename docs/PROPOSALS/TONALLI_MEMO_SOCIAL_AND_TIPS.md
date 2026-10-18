@@ -75,3 +75,17 @@ Compatibility with TM0/TM1 history; OP_RETURN size limits; input/author binding;
 ## Publication boundary
 
 This plan intentionally omits private operational rows, topology, credentials, internal deployment links, treasury/risk rules and unreleased implementation details. It is subject to the canonical roadmap's review process. The live public **roadmap-status.json is unchanged**; only an authorized, freshly observed and validated publication may update that snapshot.
+
+
+## Existing Tonalli Messages reply flow — reuse before building (17 Oct 2026 addendum)
+
+Code review of [RMZWallet](https://github.com/xolosArmy/RMZWallet) found two separate reply-related capabilities:
+
+1. **Tonalli Messages (Wallet dashboard)**: `src/routes/Dashboard.tsx` already shows received Tonalli OP_RETURN messages and a **Responder** action. It reads the sender address and message from a Chronik transaction and routes to `/send-xec` with `to`, suggested `msg`, and `replyTo=<original TXID>`. `src/routes/SendXEC.tsx` displays the TXID but currently calls `sendXEC(destinationAddress, amountInSats, message)` without embedding a verifiable parent reference into the transmitted payload. This is a real existing reply **UX**, not proof of a cryptographically linked TM1 public thread.
+2. **TM-COMM (private messaging)**: `src/features/privateMessaging` and `server/tmComm` include `replyToId`, authentication, private conversation boundaries, server-side idempotency and durable message records. Its documented A0 is a private, reservation-scoped staging architecture, *not* a public TM1 reply service. Do not reuse its private conversation store, tenancy or permissions as a public feed.
+
+**Updated S0 acceptance:** compare the existing `replyTo` route parameter to an explicit versioned TM1 parent-TXID envelope; specify canonical bytes and author binding, ensure backward compatibility, and protect against referring to an unrelated or unverified post.
+
+**Updated S1 implementation:** reuse/refactor the existing Wallet reply navigation, sender validation, message composition and human-approved sending whenever compatible. Only add the protocol/indexing/UI work needed for publicly discoverable verified TM1 threads; never create a second Wallet signing or broadcast engine. The interface must distinguish a directed Tonalli Message, a private TM-COMM reply and a public TM1 threaded reply.
+
+This reduces Wallet-side UI duplication but **does not mean S1 is already implemented**. No production flag, funds gate or deployment is authorized by this addendum.
