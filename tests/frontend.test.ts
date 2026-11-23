@@ -226,3 +226,23 @@ test('no-JavaScript page still exposes context, complete address, wallet link an
   assert.equal(page.window.document.getElementById('donation-address')?.textContent, EXACT_ADDRESS);
   assert.equal(page.window.document.querySelectorAll('.project').length, 0); page.window.close();
 });
+
+test('dated audiovisual editorial outlook lists four initiatives without changing validated snapshot counts', async () => {
+  const page = await dom(); const doc = page.window.document;
+  const section = doc.getElementById('audiovisual')!;
+  assert.equal(section.getAttribute('aria-labelledby'), 'audiovisual-title');
+  assert.equal(doc.querySelector('nav a[href="#audiovisual"]') !== null, true);
+  const cards = [...section.querySelectorAll('.audiovisual-card')];
+  assert.equal(cards.length, 4);
+  for (const id of ['XR-TV-TIP-01', 'TM-VIDEO-01', 'XR-TV-LIVE-01', 'XR-TV-MEMBER-01']) {
+    assert.equal(cards.filter(card => card.textContent?.includes(id)).length, 1);
+  }
+  assert.match(section.textContent!, /23 November 2026/);
+  assert.match(section.textContent!, /separate from the validated project snapshot/);
+  assert.match(section.textContent!, /explicit user-authorized wallet action/);
+  assert.equal(section.querySelectorAll('script,iframe,form,button').length, 0);
+  await mountRoadmap(doc, fetchText(canonicalJson(await snapshot()))).reload();
+  assert.equal(doc.querySelectorAll('#projects .project').length, 8);
+  assert.equal(doc.getElementById('public-count')?.textContent, '8');
+  page.window.close();
+});
