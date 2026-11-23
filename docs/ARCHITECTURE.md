@@ -37,3 +37,10 @@ No data is rendered until validation finishes. A failed refresh removes the form
 The page exposes context, full support address, wallet link and JSON access without JavaScript. Browser-side validation and interactive project rendering require JavaScript and Web Crypto. This limitation is explicit in the page and release notes.
 
 The build has no Google credentials or source IDs. It copies only the shell, CSS, favicon, bundled frontend, public schema, validated current snapshot and validated history. Private exports, tests, local diagnostic paths, package sources and publisher code are not static hosting assets.
+
+
+## Dated audiovisual outlook (editorial, not a snapshot)
+
+On 23 November 2026 the owner requested a public-facing summary of four strategic audiovisual initiatives related to Xolos Ramírez TV. The static `#audiovisual` section presents only their public identifiers and bounded descriptions: XR-TV-TIP-01, TM-VIDEO-01, XR-TV-LIVE-01 and XR-TV-MEMBER-01. Public disclosure is limited to conceptual plans; there are no internal gates, implementation repositories, funding details, infrastructure paths, private dependencies, user identities or credentials.
+
+This is an explicitly dated editorial note, not a project record in contract 1.0.0 and not an alternate data transport. It contains no structured status, priority, security or update fields; the validated eight-project snapshot and its counts remain unchanged. Editors must manually reconcile the note against the canonical roadmap before revising it, and remove stale claims rather than silently declaring a deployment. A future release that adds these identities to the filterable project roster requires a separately reviewed public catalog classification, versioned contract, regenerated validator and an immutable-history migration plan.
