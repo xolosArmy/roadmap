@@ -67,3 +67,8 @@ The supplied preview server performs no deployment. The GitHub Actions Pages wor
 ## Future automation model
 
 Any later live reader belongs in a private operator environment, with read-only Google access and an explicit source identity/version boundary. It must run the same adapter/contract and review the sanitized candidate before promotion. Credentials and source identifiers must never enter this public repository or frontend. Unattended publication and its authorization model require a separate task.
+
+
+## Manual editorial note for audiovisual initiatives
+
+The dated `#audiovisual` section is a publication-only strategic summary authorized for public display on 23 November 2026. It is outside the versioned `roadmap-status.json` snapshot and must never change the reported project counts or imply that initiatives are implemented. It is not a second operational source and does not read Google data at runtime. Before editing its text, compare against the canonical roadmap, document public classification and review the public diff. Publishing a concept does not authorize funds, automated signing, private repository disclosure, privileged media access or changes to PeerTube services. Any future catalog-level inclusion of these projects must follow the contract/version/history migration process.
