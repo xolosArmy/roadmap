@@ -50,6 +50,10 @@ ecash:qq7qn90ev23ecastqmn8as00u8mcp4tzsspvt5dtlk
 
 The full address is displayed and copied unchanged. The wallet URI contains no amount. No QR, payment backend or donation tracking is included.
 
+## Dated audiovisual strategic outlook
+
+The static public page includes a clearly identified audiovisual outlook (23 November 2026) for Xolos Ramírez TV: XR-TV-TIP-01, TM-VIDEO-01, XR-TV-LIVE-01 and XR-TV-MEMBER-01. These are editorial proposals, not live features or extra rows in the validated eight-project snapshot. This addition does not alter the snapshot contract, catalog, published history, donation identity or any signer/funds authority. See the [architecture](docs/ARCHITECTURE.md) and [publication rules](docs/PUBLICATION.md) for the manual reconciliation and catalog-migration boundaries.
+
 ## Review documents
 
 - [Contract and source derivation](docs/CONTRACT.md)
